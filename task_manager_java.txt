@@ -1,0 +1,107 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class TaskManager {
+
+    private Map<Integer, String> tasks;
+    private int taskCounter;
+
+    public TaskManager() {
+        tasks = new HashMap<>();
+        taskCounter = 1;
+    }
+
+    // Add a new task
+    public void addTask(String taskDescription) {
+        tasks.put(taskCounter, taskDescription);
+        System.out.println("Task added with ID " + taskCounter + ": " + taskDescription);
+        taskCounter++;
+    }
+
+    // Edit an existing task
+    public void editTask(int taskId, String newDescription) {
+        if (tasks.containsKey(taskId)) {
+            tasks.put(taskId, newDescription);
+            System.out.println("Task with ID " + taskId + " has been updated to: " + newDescription);
+        } else {
+            System.out.println("Task not found.");
+        }
+    }
+
+    // Delete a task
+    public void deleteTask(int taskId) {
+        if (tasks.containsKey(taskId)) {
+            tasks.remove(taskId);
+            System.out.println("Task with ID " + taskId + " has been deleted.");
+        } else {
+            System.out.println("Task not found.");
+        }
+    }
+
+    // View all tasks
+    public void viewTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks available.");
+        } else {
+            System.out.println("Current tasks:");
+            for (Map.Entry<Integer, String> task : tasks.entrySet()) {
+                System.out.println("ID " + task.getKey() + ": " + task.getValue());
+            }
+        }
+    }
+
+    // Main method to interact with the task manager
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TaskManager taskManager = new TaskManager();
+
+        while (true) {
+            System.out.println("\nTask Manager Menu:");
+            System.out.println("1. Add Task");
+            System.out.println("2. Edit Task");
+            System.out.println("3. Delete Task");
+            System.out.println("4. View Tasks");
+            System.out.println("5. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter task description: ");
+                    String taskDescription = scanner.nextLine();
+                    taskManager.addTask(taskDescription);
+                    break;
+
+                case 2:
+                    System.out.print("Enter task ID to edit: ");
+                    int editTaskId = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline character
+                    System.out.print("Enter new task description: ");
+                    String newDescription = scanner.nextLine();
+                    taskManager.editTask(editTaskId, newDescription);
+                    break;
+
+                case 3:
+                    System.out.print("Enter task ID to delete: ");
+                    int deleteTaskId = scanner.nextInt();
+                    taskManager.deleteTask(deleteTaskId);
+                    break;
+
+                case 4:
+                    taskManager.viewTasks();
+                    break;
+
+                case 5:
+                    System.out.println("Exiting Task Manager. Goodbye!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
